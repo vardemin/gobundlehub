@@ -3,28 +3,25 @@ package common
 import (
 	"fmt"
 
-	"github.com/zebresel-com/mongodm"
+	"gopkg.in/mgo.v2"
 )
 
 //DB field
-var Connection *mongodm.Connection
+var Session *mgo.Session
 
 //Init func
-func Init() (*mongodm.Connection, error) {
-	dbConfig := &mongodm.Config{
-		DatabaseHosts: []string{"127.0.0.1"},
-		DatabaseName:  "bundlehub",
-	}
+func Init() (*mgo.Session, error) {
 
-	connection, err := mongodm.Connect(dbConfig)
+	Session, err := mgo.Dial("mongodb://127.0.0.1:27017")
 
 	if err != nil {
 		fmt.Println("Database connection error: %v", err)
 	}
-	return connection, err
+
+	return Session, err
 }
 
 //GetDB retun db instance
-func GetDB() *mongodm.Connection {
-	return Connection
+func GetDB() *mgo.Session {
+	return Session
 }

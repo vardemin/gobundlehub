@@ -1,23 +1,21 @@
 package main
 
 import (
+	"bundlehub/article"
 	"bundlehub/common"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zebresel-com/mongodm"
 )
 
-func initDb(db *mongodm.Connection) {
-
-}
-
 func main() {
-
 	db, _ := common.Init()
+	//db, _ := common.Init()
 	//Migrate(db)
-	defer db.Close()
 
 	r := gin.Default()
+
+	v1 := r.Group("/api")
+	article.ArticleGroup(v1.Group("/article"))
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
