@@ -4,13 +4,19 @@ import (
 	"bundlehub/article"
 	"bundlehub/common"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/gin-gonic/gin"
 )
 
+func Migrate(db *gorm.DB) {
+	db.AutoMigrate(&article.Article{})
+}
+
 func main() {
 	db, _ := common.Init()
-	//db, _ := common.Init()
-	//Migrate(db)
+	Migrate(db)
+	defer db.Close()
 
 	r := gin.Default()
 

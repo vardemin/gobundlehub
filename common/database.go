@@ -3,25 +3,28 @@ package common
 import (
 	"fmt"
 
-	"gopkg.in/mgo.v2"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 //DB field
-var Session *mgo.Session
+var DB *gorm.DB
 
 //Init func
-func Init() (*mgo.Session, error) {
+func Init() (*gorm.DB, error) {
 
-	Session, err := mgo.Dial("mongodb://127.0.0.1:27017")
+	db, err := gorm.Open("mysql", "root:pass4thrive@/bundlehub?charset=utf8&parseTime=True&loc=Local")
+	//defer db.Close()
 
 	if err != nil {
 		fmt.Println("Database connection error: %v", err)
 	}
 
-	return Session, err
+	DB = db
+	return DB, err
 }
 
 //GetDB retun db instance
-func GetDB() *mgo.Session {
-	return Session
+func GetDB() *gorm.DB {
+	return DB
 }
